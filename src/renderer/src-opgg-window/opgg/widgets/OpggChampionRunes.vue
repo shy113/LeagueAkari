@@ -5,9 +5,18 @@
   >
     <div class="mb-2 flex items-center justify-between text-[13px] font-bold">
       {{ t('opgg.champion.runes') }}
-      <NCheckbox size="small" v-model:checked="isRunesExpanded">
-        {{ t('opgg.champion.showAll') }}
-      </NCheckbox>
+      <div class="flex items-center gap-2">
+        <NCheckbox
+          size="small"
+          v-model:checked="ogs.frontendSettings.autoApplyRunes"
+          :title="t('opgg.view.settings.autoApplyRunes.description')"
+        >
+          {{ t('opgg.champion.autoApply') }}
+        </NCheckbox>
+        <NCheckbox size="small" v-model:checked="isRunesExpanded">
+          {{ t('opgg.champion.showAll') }}
+        </NCheckbox>
+      </div>
     </div>
 
     <!--  runes -->
@@ -73,12 +82,13 @@
 </template>
 
 <script setup lang="ts">
+import { useOpggStore } from '@opgg-window/shards/opgg/store'
 import PerkDisplay from '@renderer-shared/components/widgets/PerkDisplay.vue'
 import PerkstyleDisplay from '@renderer-shared/components/widgets/PerkstyleDisplay.vue'
 import { useLeagueClientStore } from '@renderer-shared/shards/league-client/store'
 import { useTranslation } from 'i18next-vue'
 import { NButton, NCheckbox } from 'naive-ui'
-import { ref, watchEffect } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 
 import { useOpgg } from '../context'
 import { useLoadout } from '../utils/loadout'
@@ -87,6 +97,7 @@ const { champion, position } = useOpgg()
 const { setRunes } = useLoadout()
 const { t } = useTranslation()
 const lcs = useLeagueClientStore()
+const ogs = useOpggStore()
 
 const isRunesExpanded = ref(false)
 
@@ -95,4 +106,16 @@ watchEffect(() => {
     isRunesExpanded.value = false
   }
 })
+
+watch(
+  () => ogs.frontendSettings.autoApplyRunes,
+  (val) => {
+    if (val && champion.value?.data.runes?.[0] && lcs.isConnected) {
+      setRunes(champion.value.data.runes[0], {
+        championId: champion.value.data.summary.id,
+        position: position.value
+      })
+    }
+  }
+)
 </script>

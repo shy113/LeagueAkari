@@ -8,6 +8,8 @@ auxWindow:
     indicatorTitle: $t(common:appName) 的小型辅助功能窗口
     pin: 置顶
     unpin: 取消置顶
+    dock: 吸附到客户端
+    undock: 取消吸附
     repositionToAlignLeagueClientUx: 贴附到客户端
   championBench:
     title: 英雄选择台
@@ -63,6 +65,8 @@ auxWindow:
     operations:
       immediately: 立即
       second: 秒
+      expandDetails: 展开详情
+      collapseDetails: 收起详情
       autoAccept:
         label: 自动接受
         unavailable: 模式不适用
@@ -96,6 +100,7 @@ auxWindow:
         cancel: 取消本次自动匹配
         searching: 匹配中
         searchIn: 匹配中 {{seconds}} s
+        willSearchIn: '{{seconds}} s 后匹配'
         waitingForPenalty: 等待秒退计时器 {{seconds}} s
         waitingForMembers: 自动匹配需达到 {{count}} 人
         waitingForInvitees: 等待邀请中成员

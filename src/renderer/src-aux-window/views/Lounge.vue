@@ -1,137 +1,183 @@
 <template>
-  <div class="relative box-border flex h-full flex-col items-center justify-center p-3">
-    <div class="flex flex-1 flex-col items-center justify-center">
-      <LcuImage
-        v-if="lcs.gameflow.session?.map?.assets?.['game-select-icon-hover']"
-        class="mb-4 h-16 w-16"
-        :src="lcs.gameflow.session?.map?.assets?.['game-select-icon-hover']"
-      />
+  <div class="box-border flex h-full flex-col p-2.5 pt-1 pb-3">
+    <!-- Status Banner Container with Diamond Accents -->
+    <div class="relative my-0.5 flex items-center justify-between">
+      <!-- Left cyan accent diamond -->
+      <div class="h-1.5 w-1.5 shrink-0 rotate-45 bg-[#00f0ff] shadow-[0_0_6px_#00f0ff]" />
 
-      <template v-if="lcs.gameflow.phase === 'ReadyCheck'">
-        <template v-if="agfs.willAcceptAt > 0">
-          <span class="mb-2 text-base font-bold text-gray-900 dark:text-gray-100">{{
-            t('auxWindow.lounge.panel.autoAccept.acceptIn', { seconds: willAcceptIn.toFixed(1) })
-          }}</span>
-          <NButton type="primary" secondary size="tiny" @click="() => handleCancelAutoAccept()">{{
-            t('auxWindow.lounge.panel.autoAccept.cancelButton')
-          }}</NButton>
-        </template>
-        <template v-else-if="lcs.matchmaking.readyCheck?.playerResponse === 'Accepted'">
-          <span class="mb-2 text-base font-bold text-gray-900 dark:text-gray-100">{{
-            t('auxWindow.lounge.panel.autoAccept.accepted')
-          }}</span>
-          <span class="mb-2 text-[13px] text-gray-500 dark:text-gray-400">{{
-            t('auxWindow.lounge.panel.autoAccept.subtitle1')
-          }}</span>
-          <NButton type="warning" secondary size="tiny" @click="() => handleDecline()">{{
-            t('auxWindow.lounge.panel.autoAccept.declineButton')
-          }}</NButton>
+      <!-- Main Status Card -->
+      <div
+        class="mx-1.5 flex h-7.5 flex-1 items-center justify-between rounded-xs border border-[#785a28] bg-gradient-to-b from-[#101c26] to-[#09131c] px-2 shadow-[inset_0_0_8px_rgba(0,0,0,0.7),0_2px_4px_rgba(0,0,0,0.6)]"
+      >
+        <!-- ReadyCheck -->
+        <template v-if="lcs.gameflow.phase === 'ReadyCheck'">
+          <template v-if="agfs.willAcceptAt > 0">
+            <span class="truncate text-[11.5px] font-semibold text-[#00f0ff]">
+              {{
+                t('auxWindow.lounge.panel.autoAccept.acceptIn', {
+                  seconds: willAcceptIn.toFixed(1)
+                })
+              }}
+            </span>
+            <button
+              type="button"
+              class="h-5 cursor-pointer rounded-xs border border-[#785a28] bg-[#141e26] px-1.5 text-[10.5px] font-medium text-[#c8aa6e] transition-all hover:border-[#c8aa6e] hover:bg-[#1e2a36] hover:text-[#f0e6d2]"
+              @click="handleCancelAutoAccept"
+            >
+              {{ t('auxWindow.lounge.panel.autoAccept.cancelButton') }}
+            </button>
+          </template>
+          <template v-else-if="lcs.matchmaking.readyCheck?.playerResponse === 'Accepted'">
+            <span class="text-[11.5px] font-semibold text-[#00f0ff]">
+              {{ t('auxWindow.lounge.panel.autoAccept.accepted') }}
+            </span>
+            <button
+              type="button"
+              class="h-5 cursor-pointer rounded-xs border border-[#785a28] bg-[#141e26] px-1.5 text-[10.5px] font-medium text-[#e4b044] transition-all hover:border-[#c8aa6e] hover:bg-[#1e2a36]"
+              @click="handleDecline"
+            >
+              {{ t('auxWindow.lounge.panel.autoAccept.declineButton') }}
+            </button>
+          </template>
+          <template v-else-if="lcs.matchmaking.readyCheck?.playerResponse === 'Declined'">
+            <span class="text-[11.5px] font-semibold text-rose-400">
+              {{ t('auxWindow.lounge.panel.autoAccept.declined') }}
+            </span>
+            <button
+              type="button"
+              class="h-5 cursor-pointer rounded-xs border border-[#785a28] bg-[#141e26] px-1.5 text-[10.5px] font-medium text-[#c8aa6e] transition-all hover:border-[#c8aa6e] hover:bg-[#1e2a36]"
+              @click="handleAccept"
+            >
+              {{ t('auxWindow.lounge.panel.autoAccept.acceptButton') }}
+            </button>
+          </template>
+          <template v-else>
+            <span class="text-[11.5px] font-semibold text-[#f0e6d2]">
+              {{ t('auxWindow.lounge.panel.autoAccept.pending') }}
+            </span>
+            <div class="flex gap-1">
+              <button
+                type="button"
+                class="h-5 cursor-pointer rounded-xs border border-[#0acbe6] bg-[#034b6b] px-1.5 text-[10.5px] font-semibold text-[#00f0ff] shadow-[0_0_6px_rgba(10,203,230,0.4)] transition-all hover:bg-[#005a82]"
+                @click="handleAccept"
+              >
+                {{ t('auxWindow.lounge.panel.autoAccept.acceptButton') }}
+              </button>
+              <button
+                type="button"
+                class="h-5 cursor-pointer rounded-xs border border-[#785a28] bg-[#141e26] px-1.5 text-[10.5px] font-medium text-[#a09b8c] transition-all hover:border-[#ff4655] hover:text-[#ff4655]"
+                @click="handleDecline"
+              >
+                {{ t('auxWindow.lounge.panel.autoAccept.declineButton') }}
+              </button>
+            </div>
+          </template>
         </template>
 
-        <template v-else-if="lcs.matchmaking.readyCheck?.playerResponse === 'Declined'">
-          <span class="mb-2 text-base font-bold text-gray-900 dark:text-gray-100">{{
-            t('auxWindow.lounge.panel.autoAccept.declined')
-          }}</span>
-          <span class="mb-2 text-[13px] text-gray-500 dark:text-gray-400">{{
-            t('auxWindow.lounge.panel.autoAccept.subtitle2')
-          }}</span>
-          <NButton type="primary" secondary size="tiny" @click="() => handleAccept()">{{
-            t('auxWindow.lounge.panel.autoAccept.acceptButton')
-          }}</NButton>
+        <!-- Matchmaking -->
+        <template v-else-if="lcs.gameflow.phase === 'Matchmaking'">
+          <div class="flex min-w-0 flex-1 items-center gap-1.5">
+            <HextechCrystal />
+            <span class="truncate text-[11.5px] font-medium text-[#e4b044]">
+              {{
+                lcs.matchmaking.search
+                  ? formatMatchmakingSearchText(lcs.matchmaking.search)
+                  : t('auxWindow.lounge.panel.matchmaking.searching')
+              }}
+            </span>
+          </div>
+          <button
+            type="button"
+            :disabled="isCancelingSearching"
+            class="h-5 cursor-pointer rounded-xs border border-[#785a28] bg-[#141e26] px-1.5 text-[10.5px] font-medium text-[#a09b8c] transition-all hover:border-[#ff4655] hover:text-[#ff4655] disabled:cursor-not-allowed"
+            @click="handleCancelSearching"
+          >
+            {{ t('auxWindow.lounge.panel.matchmaking.stop') }}
+          </button>
         </template>
+
+        <!-- Auto Search Match Countdown -->
+        <template v-else-if="agfs.willSearchMatch">
+          <div class="flex min-w-0 flex-1 items-center gap-1.5">
+            <HextechCrystal />
+            <span class="truncate text-[11.5px] font-medium text-[#00f0ff]">
+              {{
+                t('auxWindow.lounge.panel.matchmaking.willSearchIn', {
+                  seconds: willSearchMatchIn.toFixed(1)
+                })
+              }}
+            </span>
+          </div>
+          <button
+            type="button"
+            class="h-5 cursor-pointer rounded-xs border border-[#785a28] bg-[#141e26] px-1.5 text-[10.5px] font-medium text-[#c8aa6e] transition-all hover:border-[#c8aa6e] hover:bg-[#1e2a36] hover:text-[#f0e6d2]"
+            @click="handleCancelAutoSearchMatch"
+          >
+            {{ t('auxWindow.lounge.panel.matchmaking.cancel') }}
+          </button>
+        </template>
+
+        <!-- Lobby Default View -->
         <template v-else>
-          <span class="mb-2 text-base font-bold text-gray-900 dark:text-gray-100">{{
-            t('auxWindow.lounge.panel.autoAccept.pending')
-          }}</span>
-          <div class="flex gap-1">
-            <NButton type="primary" secondary size="tiny" @click="() => handleAccept()">{{
-              t('auxWindow.lounge.panel.autoAccept.acceptButton')
-            }}</NButton>
-            <NButton type="warning" secondary size="tiny" @click="() => handleDecline()">{{
-              t('auxWindow.lounge.panel.autoAccept.declineButton')
-            }}</NButton>
+          <template v-if="agfs.settings.autoMatchmakingEnabled && penaltyTime">
+            <span class="truncate text-[11.5px] text-[#e4b044]">
+              {{
+                t('auxWindow.lounge.panel.matchmaking.waitingForPenalty', {
+                  seconds: penaltyTime.toFixed()
+                })
+              }}
+            </span>
+          </template>
+          <template
+            v-else-if="
+              agfs.settings.autoMatchmakingEnabled &&
+              agfs.activityStartStatus === 'insufficient-members'
+            "
+          >
+            <span class="truncate text-[11.5px] text-[#a09b8c]">
+              {{
+                t('auxWindow.lounge.panel.matchmaking.waitingForMembers', {
+                  count: agfs.settings.autoMatchmakingMinimumMembers
+                })
+              }}
+            </span>
+          </template>
+          <template
+            v-else-if="
+              agfs.settings.autoMatchmakingEnabled &&
+              agfs.activityStartStatus === 'waiting-for-invitees'
+            "
+          >
+            <span class="truncate text-[11.5px] text-[#a09b8c]">
+              {{ t('auxWindow.lounge.panel.matchmaking.waitingForInvitees') }}
+            </span>
+          </template>
+          <div v-else class="flex min-w-0 flex-1 items-center gap-1.5">
+            <HextechCrystal />
+            <span
+              class="truncate text-[12px] font-semibold tracking-wide text-[#cdbe91]"
+              :title="formatMapModeText()"
+            >
+              {{ formatMapModeText() }}
+            </span>
           </div>
         </template>
-      </template>
+      </div>
 
-      <template v-else-if="lcs.gameflow.phase === 'Matchmaking'">
-        <span class="mb-2 text-base font-bold text-gray-900 dark:text-gray-100">{{
-          t('auxWindow.lounge.panel.matchmaking.searching')
-        }}</span>
-        <span
-          class="mb-2 text-[13px] text-gray-500 dark:text-gray-400"
-          v-if="lcs.matchmaking.search"
-          >{{ formatMatchmakingSearchText(lcs.matchmaking.search) }}</span
-        >
-        <NButton
-          :loading="isCancelingSearching"
-          type="warning"
-          secondary
-          size="tiny"
-          @click="() => handleCancelSearching()"
-          ><template v-if="agfs.settings.autoMatchmakingEnabled">{{
-            t('auxWindow.lounge.panel.matchmaking.stopAndDisable')
-          }}</template
-          ><template v-else>{{ t('auxWindow.lounge.panel.matchmaking.stop') }}</template></NButton
-        >
-      </template>
-      <template v-else-if="agfs.willSearchMatch">
-        <span class="mb-2 text-base font-bold text-gray-900 dark:text-gray-100">
-          {{
-            t('auxWindow.lounge.panel.matchmaking.searchIn', {
-              seconds: willSearchMatchIn.toFixed(1)
-            })
-          }}
-        </span>
-        <NButton
-          type="primary"
-          secondary
-          size="tiny"
-          @click="() => handleCancelAutoSearchMatch()"
-          >{{ t('auxWindow.lounge.panel.matchmaking.cancel') }}</NButton
-        >
-      </template>
-
-      <template v-else>
-        <span
-          class="mb-2 block max-w-70 overflow-hidden text-base font-bold text-ellipsis whitespace-nowrap text-gray-900 dark:text-gray-100"
-          :title="`${lcs.gameflow.session?.gameData.queue.name || t('auxWindow.lounge.panel.gameMode')} · ${lcs.gameflow.session?.map.name || t('auxWindow.lounge.panel.map')}`"
-          >{{ formatMapModeText() }}</span
-        >
-        <template v-if="agfs.settings.autoMatchmakingEnabled">
-          <span class="mb-2 text-[13px] text-gray-500 dark:text-gray-400" v-if="penaltyTime">{{
-            t('auxWindow.lounge.panel.matchmaking.waitingForPenalty', {
-              seconds: penaltyTime.toFixed()
-            })
-          }}</span>
-          <span
-            class="mb-2 text-[13px] text-gray-500 dark:text-gray-400"
-            v-else-if="agfs.activityStartStatus === 'insufficient-members'"
-          >
-            {{
-              t('auxWindow.lounge.panel.matchmaking.waitingForMembers', {
-                count: agfs.settings.autoMatchmakingMinimumMembers
-              })
-            }}
-          </span>
-          <span
-            class="mb-2 text-[13px] text-gray-500 dark:text-gray-400"
-            v-else-if="agfs.activityStartStatus === 'waiting-for-invitees'"
-            >{{ t('auxWindow.lounge.panel.matchmaking.waitingForInvitees') }}</span
-          >
-        </template>
-      </template>
+      <!-- Right cyan accent diamond -->
+      <div class="h-1.5 w-1.5 shrink-0 rotate-45 bg-[#00f0ff] shadow-[0_0_6px_#00f0ff]" />
     </div>
 
-    <div class="w-full">
+    <!-- Operations Panel -->
+    <div class="mt-1 flex-1">
       <LoungeOperations />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import HextechCrystal from '@aux-window/components/HextechCrystal.vue'
 import LoungeOperations from '@aux-window/components/LoungeOperations.vue'
-import LcuImage from '@renderer-shared/components/LcuImage.vue'
 import { useComponentName } from '@renderer-shared/composables/useComponentName'
 import { useInstance } from '@renderer-shared/shards'
 import { AutoGameflowRenderer } from '@renderer-shared/shards/auto-gameflow'
@@ -142,7 +188,6 @@ import { LoggerRenderer } from '@renderer-shared/shards/logger'
 import { GetSearch } from '@shared/types/league-client/matchmaking'
 import { useIntervalFn } from '@vueuse/core'
 import { useTranslation } from 'i18next-vue'
-import { NButton } from 'naive-ui'
 import { computed, ref, watch } from 'vue'
 
 const { t } = useTranslation()

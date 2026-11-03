@@ -44,7 +44,7 @@ export const NATIVE_SUPPORT: NativeSupport = {
   isProcessForeground: {
     available: false,
     availableOnCurrentPlatform: false,
-    requiresElevation: true
+    requiresElevation: false
   }
 }
 
@@ -64,7 +64,7 @@ function applyNativeSupport() {
   NATIVE_SUPPORT.adjustLeagueClientWindowSize.available = isWindows && isElevated
   NATIVE_SUPPORT.adjustLeagueClientWindowSize.availableOnCurrentPlatform = isWindows
 
-  NATIVE_SUPPORT.isProcessForeground.available = isWindows && isElevated
+  NATIVE_SUPPORT.isProcessForeground.available = isWindows
   NATIVE_SUPPORT.isProcessForeground.availableOnCurrentPlatform = isWindows
 }
 

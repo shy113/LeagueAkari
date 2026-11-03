@@ -707,7 +707,6 @@ export function provideOpgg() {
 
       let mode0 = mode.value
       let isUnsupportedMode = false
-      let isMayhem = false
 
       switch (active.gameMode) {
         case 'CLASSIC':
@@ -718,7 +717,6 @@ export function provideOpgg() {
           position.value = 'none'
           break
         case 'KIWI':
-          isMayhem = true
           mode0 = 'aram_mayhem'
           position.value = 'none'
           break
@@ -784,7 +782,6 @@ export function provideOpgg() {
         const runes = champion.value?.data.runes
 
         if (
-          !isMayhem &&
           !active.hasAutoSpellsConfig &&
           summonerSpells &&
           summonerSpells[0] &&
@@ -794,7 +791,6 @@ export function provideOpgg() {
         }
 
         if (
-          !isMayhem &&
           !active.hasAutoRunesConfig &&
           runes &&
           runes[0] &&

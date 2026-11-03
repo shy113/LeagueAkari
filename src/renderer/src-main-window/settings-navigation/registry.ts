@@ -414,6 +414,13 @@ const targetDefinitions = [
     descriptionKey: 'settings.multiWindow.auxWindow.autoShow.description'
   },
   {
+    id: 'multi-window.aux.show-in-taskbar',
+    route: { tab: 'multi-window' },
+    parentId: 'multi-window.aux',
+    labelKey: 'settings.multiWindow.auxWindow.showInTaskbar.label',
+    descriptionKey: 'settings.multiWindow.auxWindow.showInTaskbar.description'
+  },
+  {
     id: 'multi-window.aux.opacity',
     route: { tab: 'multi-window' },
     parentId: 'multi-window.aux',
@@ -446,6 +453,13 @@ const targetDefinitions = [
     parentId: 'multi-window.opgg',
     labelKey: 'settings.multiWindow.opggWindow.autoShow.label',
     descriptionKey: 'settings.multiWindow.opggWindow.autoShow.description'
+  },
+  {
+    id: 'multi-window.opgg.show-in-taskbar',
+    route: { tab: 'multi-window' },
+    parentId: 'multi-window.opgg',
+    labelKey: 'settings.multiWindow.opggWindow.showInTaskbar.label',
+    descriptionKey: 'settings.multiWindow.opggWindow.showInTaskbar.description'
   },
   {
     id: 'multi-window.opgg.shortcut',

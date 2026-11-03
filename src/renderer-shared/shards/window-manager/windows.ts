@@ -70,11 +70,33 @@ export class AkariAuxWindow extends BaseAkariWindowRenderer<
     return this._context.setting.set(MAIN_SHARD_NAMESPACE_AUX_WINDOW, 'enabled', value)
   }
 
-  repositionToAlignLeagueClientUx() {
+  setShowInTaskbar(value: boolean) {
+    return this._context.setting.set(MAIN_SHARD_NAMESPACE_AUX_WINDOW, 'showInTaskbar', value)
+  }
+
+  setAutoDockToLeagueClient(value: boolean) {
+    return this._context.setting.set(
+      MAIN_SHARD_NAMESPACE_AUX_WINDOW,
+      'autoDockToLeagueClient',
+      value
+    )
+  }
+
+  setDockPlacement(value: 'top-left' | 'bottom-left' | 'top-right' | 'bottom-right') {
+    return this._context.setting.set(MAIN_SHARD_NAMESPACE_AUX_WINDOW, 'dockPlacement', value)
+  }
+
+  setExpanded(value: boolean) {
+    return this._context.ipc.call(MAIN_SHARD_NAMESPACE_AUX_WINDOW, 'setExpanded', value)
+  }
+
+  repositionToAlignLeagueClientUx(
+    placement: 'top-left' | 'bottom-left' | 'top-right' | 'bottom-right' = 'top-right'
+  ) {
     return this._context.ipc.call(
       MAIN_SHARD_NAMESPACE_AUX_WINDOW,
       'repositionToAlignLeagueClientUx',
-      'top-right'
+      placement
     )
   }
 }
@@ -108,6 +130,14 @@ export class AkariOpggWindow extends BaseAkariWindowRenderer<
 
   setShowSkinSelector(value: boolean) {
     return this._context.setting.set(MAIN_SHARD_NAMESPACE_OPGG_WINDOW, 'showSkinSelector', value)
+  }
+
+  setShowInTaskbar(value: boolean) {
+    return this._context.setting.set(MAIN_SHARD_NAMESPACE_OPGG_WINDOW, 'showInTaskbar', value)
+  }
+
+  setExpanded(value: boolean) {
+    return this._context.ipc.call(MAIN_SHARD_NAMESPACE_AUX_WINDOW, 'setExpanded', value)
   }
 
   repositionToAlignLeagueClientUx() {

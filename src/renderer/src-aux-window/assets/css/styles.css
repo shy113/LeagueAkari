@@ -5,10 +5,10 @@
 
 :root {
   --la-mac-titlebar-safe-left: 76px;
-  --la-background-color-primary: var(--la-color-bg-primary);
-  --la-app-min-height: 200px;
-  --la-app-min-width: 200px;
-  --la-titlebar-height: 28px;
+  --la-background-color-primary: #070d13;
+  --la-app-min-height: 120px;
+  --la-app-min-width: 180px;
+  --la-titlebar-height: 26px;
   --la-scrollbar-height: 6px;
   --la-scrollbar-width: 6px;
 }

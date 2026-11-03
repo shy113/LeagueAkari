@@ -65,14 +65,57 @@ export class AutoGameflowActionController {
   private async _acceptMatch() {
     const { ipc, leagueClient, logger, namespace, state } = this._context
 
+    if (leagueClient.data.gameflow.phase !== 'ReadyCheck') {
+      logger.info('Auto-accept skipped: current phase is not ReadyCheck', {
+        phase: leagueClient.data.gameflow.phase
+      })
+      state.clearAutoAccept()
+      return
+    }
+
+    const readyCheck = leagueClient.data.matchmaking.readyCheck
+    if (readyCheck) {
+      if (readyCheck.playerResponse === 'Accepted') {
+        logger.info('Auto-accept skipped: match already accepted')
+        state.clearAutoAccept()
+        return
+      }
+      if (readyCheck.playerResponse === 'Declined') {
+        logger.info('Auto-accept skipped: match already declined')
+        state.clearAutoAccept()
+        return
+      }
+      if (readyCheck.state && readyCheck.state !== 'InProgress') {
+        logger.info(`Auto-accept skipped: ready check state is ${readyCheck.state}`)
+        state.clearAutoAccept()
+        return
+      }
+    }
+
     try {
       await leagueClient.api.matchmaking.accept()
-    } catch (error) {
-      ipc.sendEvent(namespace, 'error-accept-match', formatError(error))
+      logger.info('Successfully accepted match')
+    } catch (error: any) {
+      const errorMsg =
+        error?.response?.data?.message || error?.message || (typeof error === 'string' ? error : '')
+      const isReadinessError =
+        typeof errorMsg === 'string' &&
+        (errorMsg.includes('Failed to indicate team builder ready check readiness') ||
+          errorMsg.includes('RPC_ERROR') ||
+          leagueClient.data.gameflow.phase !== 'ReadyCheck')
 
-      logger.warn(`Failed to accept match`, error)
+      if (isReadinessError) {
+        logger.info('Auto-accept aborted: ready check was already completed or cancelled', {
+          phase: leagueClient.data.gameflow.phase,
+          message: errorMsg
+        })
+      } else {
+        ipc.sendEvent(namespace, 'error-accept-match', formatError(error))
+        logger.warn(`Failed to accept match`, error)
+      }
+    } finally {
+      state.clearAutoAccept()
     }
-    state.clearAutoAccept()
   }
 
   private async _playAgain() {

@@ -111,6 +111,9 @@ opgg:
       enabled:
         label: 开启
         description: 启用英雄数据窗口。关闭后，可在主菜单重新启用它
+      showInTaskbar:
+        label: 在任务栏显示窗口图标
+        description: 在系统任务栏和 Alt+Tab 切换列表中显示该窗口。关闭后不占用任务栏
       defaultSource:
         label: 默认数据源
         description: 窗口打开时优先使用的数据源；不可用的数据源会被禁用
@@ -158,6 +161,7 @@ opgg:
     showAll: 展示全部
     spells: 召唤师技能
     apply: 应用
+    autoApply: 自动应用
     runes: 符文配法
     abilityBuild: 技能点法
     starterItemText: 初始装备

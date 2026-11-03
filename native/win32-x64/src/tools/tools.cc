@@ -151,6 +151,9 @@ Napi::Value GetLeagueClientWindowPlacementInfo(const Napi::CallbackInfo& info) {
 
   HWND hwnd = FindWindowW(APPLICATION_CLASS_NAME, APPLICATION_NAME);
   if (hwnd == NULL) {
+    hwnd = FindWindowW(APPLICATION_CLASS_NAME, NULL);
+  }
+  if (hwnd == NULL) {
     return env.Null();
   }
 
@@ -163,16 +166,25 @@ Napi::Value GetLeagueClientWindowPlacementInfo(const Napi::CallbackInfo& info) {
   UINT dpi = GetDpiForWindow(hwnd);
   float scaleFactor = static_cast<float>(dpi) / 96.0f;
 
+  bool isMinimized = IsIconic(hwnd);
+  bool isMaximized = IsZoomed(hwnd);
+  bool isNormal = !isMinimized && !isMaximized;
+
   int left = static_cast<int>(wp.rcNormalPosition.left / scaleFactor);
   int top = static_cast<int>(wp.rcNormalPosition.top / scaleFactor);
   int right = static_cast<int>(wp.rcNormalPosition.right / scaleFactor);
   int bottom = static_cast<int>(wp.rcNormalPosition.bottom / scaleFactor);
+
+  RECT rect;
+  if (!isMinimized && GetWindowRect(hwnd, &rect)) {
+    left = static_cast<int>(rect.left / scaleFactor);
+    top = static_cast<int>(rect.top / scaleFactor);
+    right = static_cast<int>(rect.right / scaleFactor);
+    bottom = static_cast<int>(rect.bottom / scaleFactor);
+  }
+
   int width = right - left;
   int height = bottom - top;
-
-  bool isMinimized = IsIconic(hwnd);
-  bool isMaximized = IsZoomed(hwnd);
-  bool isNormal = !isMinimized && !isMaximized;
 
   Napi::Object result = Napi::Object::New(env);
   result.Set("left", Napi::Number::New(env, left));

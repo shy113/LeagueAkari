@@ -288,6 +288,12 @@ settings:
       autoShow:
         label: 自动弹出和关闭
         description: 在游戏流程的部分阶段，自动弹出或关闭小窗口
+      autoDock:
+        label: 自动吸附到游戏客户端
+        description: 自动吸附并锁定在英雄联盟客户端窗口边缘，跟随客户端窗口移动与最小化
+      showInTaskbar:
+        label: 在任务栏显示窗口图标
+        description: 在系统任务栏和 Alt+Tab 切换列表中显示小窗口。关闭后将作为悬浮小窗运行，不占用任务栏
       opacity:
         label: 小窗口不透明度
         description: 小窗口的半透明状态
@@ -304,6 +310,9 @@ settings:
       autoShow:
         label: 自动弹出和关闭
         description: 在游戏流程的部分阶段，自动弹出或关闭英雄数据窗口
+      showInTaskbar:
+        label: 在任务栏显示窗口图标
+        description: 在系统任务栏和 Alt+Tab 切换列表中显示英雄数据窗口。关闭后不占用任务栏，可通过主界面图标或快捷键调出
       opacity:
         label: 英雄数据窗口不透明度
         description: 英雄数据窗口的半透明状态

@@ -36,12 +36,14 @@ export class AkariOpggWindow extends BaseAkariWindow<OpggWindowState, OpggWindow
         enabled: { default: settings.enabled, schema: z.boolean() },
         autoShow: { default: settings.autoShow, schema: z.boolean() },
         showShortcut: { default: settings.showShortcut, schema: z.string().nullable() },
-        showSkinSelector: { default: settings.showSkinSelector, schema: z.boolean() }
+        showSkinSelector: { default: settings.showSkinSelector, schema: z.boolean() },
+        showInTaskbar: { default: settings.showInTaskbar, schema: z.boolean() }
       },
       browserWindowOptions: {
         title: AkariOpggWindow.TITLE,
         icon: icon,
         show: false,
+        skipTaskbar: !settings.showInTaskbar,
         fullscreenable: false,
         frame: false,
         maximizable: false,
@@ -79,6 +81,14 @@ export class AkariOpggWindow extends BaseAkariWindow<OpggWindowState, OpggWindow
           this.showOrRestore()
         }
       }
+    )
+
+    this._context.mobxUtils.reaction(
+      () => this.settings.showInTaskbar,
+      (showInTaskbar) => {
+        this._window?.setSkipTaskbar(!showInTaskbar)
+      },
+      { fireImmediately: true }
     )
 
     this._context.mobxUtils.reaction(
@@ -145,6 +155,6 @@ export class AkariOpggWindow extends BaseAkariWindow<OpggWindowState, OpggWindow
   }
 
   protected override getSettingPropKeys() {
-    return ['enabled', 'autoShow', 'showShortcut', 'showSkinSelector'] as const
+    return ['enabled', 'autoShow', 'showShortcut', 'showSkinSelector', 'showInTaskbar'] as const
   }
 }

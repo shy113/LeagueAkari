@@ -8,6 +8,11 @@ export class OpggWindowSettings {
   pinned: boolean = true
   showShortcut: string | null = null
   showSkinSelector: boolean = false
+  showInTaskbar: boolean = false
+
+  setShowInTaskbar(showInTaskbar: boolean) {
+    this.showInTaskbar = showInTaskbar
+  }
 
   setOpacity(opacity: number) {
     this.opacity = opacity

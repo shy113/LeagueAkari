@@ -1,11 +1,28 @@
 import { Rectangle } from 'electron'
 import { makeAutoObservable, observableRef } from 'mobx'
 
+export type AuxWindowDockPlacement = 'top-left' | 'bottom-left' | 'top-right' | 'bottom-right'
+
 export class AuxWindowSettings {
   enabled: boolean = true
   autoShow: boolean = true
   opacity: number = 1
-  pinned: boolean = true
+  pinned: boolean = false
+  showInTaskbar: boolean = false
+  autoDockToLeagueClient: boolean = true
+  dockPlacement: AuxWindowDockPlacement = 'top-right'
+
+  setAutoDockToLeagueClient(autoDockToLeagueClient: boolean) {
+    this.autoDockToLeagueClient = autoDockToLeagueClient
+  }
+
+  setDockPlacement(dockPlacement: AuxWindowDockPlacement) {
+    this.dockPlacement = dockPlacement
+  }
+
+  setShowInTaskbar(showInTaskbar: boolean) {
+    this.showInTaskbar = showInTaskbar
+  }
 
   setOpacity(opacity: number) {
     this.opacity = opacity
@@ -40,6 +57,8 @@ export class AuxWindowState {
 
   show: boolean = true
 
+  expanded: boolean = false
+
   trackedBounds: Rectangle | null = null
 
   setStatus(status: 'normal' | 'maximized' | 'minimized') {
@@ -56,6 +75,10 @@ export class AuxWindowState {
 
   setShow(show: boolean) {
     this.show = show
+  }
+
+  setExpanded(expanded: boolean) {
+    this.expanded = expanded
   }
 
   setTrackedBounds(bounds: Rectangle | null) {

@@ -1,93 +1,118 @@
 <template>
-  <NCard size="small">
-    <NFlex align="center" class="h-6 not-last:mb-0.5">
-      <span class="flex-1 text-xs text-gray-600 dark:text-gray-400"
-        >{{ t('auxWindow.lounge.operations.autoAccept.label') }} ({{
-          isCustomGame
-            ? t('auxWindow.lounge.operations.autoAccept.unavailable')
-            : formatDelayText(agfs.settings.autoAcceptDelaySeconds)
-        }})</span
-      >
-      <NSwitch
-        size="small"
+  <div class="flex flex-col gap-2 select-none">
+    <!-- Auto Accept Row -->
+    <div class="flex h-6 items-center justify-between">
+      <span class="truncate text-[12px] font-medium text-[#cdbe91]">
+        {{ t('auxWindow.lounge.operations.autoAccept.label') }}
+        <span class="text-[11px] text-[#9c8c6a]">
+          ({{
+            isCustomGame
+              ? t('auxWindow.lounge.operations.autoAccept.unavailable')
+              : formatDelayText(agfs.settings.autoAcceptDelaySeconds)
+          }})
+        </span>
+      </span>
+      <HextechSwitch
         :value="agfs.settings.autoAcceptEnabled"
         @update:value="(val) => agf.setAutoAcceptEnabled(val)"
       />
-    </NFlex>
+    </div>
 
-    <NPopover :show-arrow="false">
-      <template #trigger>
-        <NFlex align="center" class="h-6 not-last:mb-0.5">
-          <div class="flex flex-1 items-center justify-start">
-            <span class="text-xs text-gray-600 dark:text-gray-400"
-              >{{ t('auxWindow.lounge.operations.autoMatchmaking.label') }} ({{
-                isCustomGame
-                  ? t('auxWindow.lounge.operations.autoMatchmaking.unavailable')
-                  : formatDelayText(agfs.settings.autoMatchmakingDelaySeconds)
-              }})</span
-            >
-            <NIcon class="ml-1 text-lg text-gray-600 dark:text-gray-400">
-              <ExpandMoreSharpIcon />
-            </NIcon>
-          </div>
-          <NSwitch
-            size="small"
-            :value="agfs.settings.autoMatchmakingEnabled"
-            @update:value="(val) => agf.setAutoMatchmakingEnabled(val)"
-          />
-        </NFlex>
-      </template>
-      <NFlex class="w-[82vw] text-[11px]" vertical>
-        <NFlex align="center" class="h-6 not-last:mb-0.5">
-          <span class="flex-1 text-xs text-gray-600 dark:text-gray-400">{{
-            t('auxWindow.lounge.operations.autoMatchmakingMinimumMembers.label')
-          }}</span>
-          <NInputNumber
-            :value="agfs.settings.autoMatchmakingMinimumMembers"
-            @update:value="(val) => agf.setAutoMatchmakingMinimumMembers(val || 1)"
-            :min="1"
-            :max="99"
-            size="tiny"
-            class="w-20"
-          />
-        </NFlex>
-        <NFlex align="center" class="h-6 not-last:mb-0.5">
-          <span class="flex-1 text-xs text-gray-600 dark:text-gray-400">{{
-            t('auxWindow.lounge.operations.autoMatchmakingDelaySeconds.label')
-          }}</span>
-          <NInputNumber
+    <!-- Auto Matchmaking Row -->
+    <div class="flex h-6 items-center justify-between">
+      <div
+        class="group flex min-w-0 flex-1 cursor-pointer items-center"
+        :title="
+          isExpanded
+            ? t('auxWindow.lounge.operations.collapseDetails')
+            : t('auxWindow.lounge.operations.expandDetails')
+        "
+        @click="handleToggleExpanded"
+      >
+        <span
+          class="truncate text-[12px] font-medium text-[#cdbe91] transition-colors group-hover:text-[#f0e6d2]"
+        >
+          {{ t('auxWindow.lounge.operations.autoMatchmaking.label') }}
+          <span class="text-[11px] text-[#9c8c6a]">
+            ({{
+              isCustomGame
+                ? t('auxWindow.lounge.operations.autoMatchmaking.unavailable')
+                : formatDelayText(agfs.settings.autoMatchmakingDelaySeconds)
+            }})
+          </span>
+        </span>
+        <span
+          class="ml-1 text-xs text-[#cdbe91] transition-transform duration-150 group-hover:text-[#f0e6d2]"
+        >
+          <template v-if="isExpanded">▲</template>
+          <template v-else>▼</template>
+        </span>
+      </div>
+      <HextechSwitch
+        :value="agfs.settings.autoMatchmakingEnabled"
+        @update:value="(val) => agf.setAutoMatchmakingEnabled(val)"
+      />
+    </div>
+
+    <!-- Hextech Divider & Expanded Section -->
+    <template v-if="isExpanded">
+      <HextechDivider />
+
+      <div class="flex flex-col gap-2">
+        <!-- Delay Seconds -->
+        <div class="flex h-6 items-center justify-between">
+          <span class="truncate text-[12px] font-medium text-[#cdbe91]">
+            {{ t('auxWindow.lounge.operations.autoMatchmakingDelaySeconds.label') }}
+          </span>
+          <HextechStepper
             :value="agfs.settings.autoMatchmakingDelaySeconds"
-            @update:value="(value) => agf.setAutoMatchmakingDelaySeconds(value || 0)"
-            :placeholder="t('auxWindow.lounge.operations.second')"
             :min="0"
-            size="tiny"
-            class="w-20"
+            :max="60"
+            :step="1"
+            @update:value="(val) => agf.setAutoMatchmakingDelaySeconds(val)"
           />
-        </NFlex>
-        <NFlex align="center" class="h-6 not-last:mb-0.5">
-          <span class="flex-1 text-xs text-gray-600 dark:text-gray-400">{{
-            t('auxWindow.lounge.operations.autoMatchmakingWaitForInvitees.label')
-          }}</span>
-          <NSwitch
+        </div>
+
+        <!-- Minimum Members -->
+        <div class="flex h-6 items-center justify-between">
+          <span class="truncate text-[12px] font-medium text-[#cdbe91]">
+            {{ t('auxWindow.lounge.operations.autoMatchmakingMinimumMembers.label') }}
+          </span>
+          <HextechStepper
+            :value="agfs.settings.autoMatchmakingMinimumMembers"
+            :min="1"
+            :max="5"
+            :step="1"
+            @update:value="(val) => agf.setAutoMatchmakingMinimumMembers(val)"
+          />
+        </div>
+
+        <!-- Wait For Invitees -->
+        <div class="flex h-6 items-center justify-between">
+          <span class="truncate text-[12px] font-medium text-[#cdbe91]">
+            {{ t('auxWindow.lounge.operations.autoMatchmakingWaitForInvitees.label') }}
+          </span>
+          <HextechSwitch
             :value="agfs.settings.autoMatchmakingWaitForInvitees"
             @update:value="(val) => agf.setAutoMatchmakingWaitForInvitees(val)"
-            size="small"
           />
-        </NFlex>
-      </NFlex>
-    </NPopover>
-  </NCard>
+        </div>
+      </div>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
+import HextechDivider from '@aux-window/components/HextechDivider.vue'
+import HextechStepper from '@aux-window/components/HextechStepper.vue'
+import HextechSwitch from '@aux-window/components/HextechSwitch.vue'
 import { useInstance } from '@renderer-shared/shards'
 import { AutoGameflowRenderer } from '@renderer-shared/shards/auto-gameflow'
 import { useAutoGameflowStore } from '@renderer-shared/shards/auto-gameflow/store'
 import { useLeagueClientStore } from '@renderer-shared/shards/league-client/store'
-import { ExpandMoreSharp as ExpandMoreSharpIcon } from '@vicons/material'
+import { WindowManagerRenderer } from '@renderer-shared/shards/window-manager'
 import { useTranslation } from 'i18next-vue'
-import { NCard, NFlex, NIcon, NInputNumber, NPopover, NSwitch } from 'naive-ui'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const { t } = useTranslation()
 
@@ -95,6 +120,14 @@ const agfs = useAutoGameflowStore()
 const lcs = useLeagueClientStore()
 
 const agf = useInstance(AutoGameflowRenderer)
+const wm = useInstance(WindowManagerRenderer)
+
+const isExpanded = ref(false)
+
+const handleToggleExpanded = () => {
+  isExpanded.value = !isExpanded.value
+  wm.auxWindow.setExpanded(isExpanded.value)
+}
 
 const isCustomGame = computed(() => {
   if (!lcs.gameflow.session) {

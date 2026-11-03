@@ -60,11 +60,17 @@ export class AutoGameflowLobbyFlowController {
     )
 
     leagueClient.events.on('/lol-matchmaking/v1/ready-check', (event) => {
-      if (
-        event.data &&
-        (event.data.playerResponse === 'Declined' || event.data.playerResponse === 'Accepted')
-      ) {
+      if (!event.data) {
+        return
+      }
+
+      if (event.data.playerResponse === 'Declined' || event.data.playerResponse === 'Accepted') {
         this._actionController.cancelAutoAccept(event.data.playerResponse.toLowerCase())
+        return
+      }
+
+      if (event.data.state && event.data.state !== 'InProgress') {
+        this._actionController.cancelAutoAccept(event.data.state.toLowerCase())
       }
     })
   }

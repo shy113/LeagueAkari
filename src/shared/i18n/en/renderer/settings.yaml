@@ -290,6 +290,12 @@ settings:
       autoShow:
         label: Auto Show and Close
         description: Automatically show or close the auxiliary window during specific game phases.
+      autoDock:
+        label: Auto-Dock to League Client
+        description: Automatically snap and lock to the edge of the League of Legends client window, following its movement and minimize states.
+      showInTaskbar:
+        label: Show Window in Taskbar
+        description: Show the auxiliary window in the taskbar and Alt+Tab switcher. When disabled, it runs as a floating window.
       opacity:
         label: Window Opacity
         description: Adjust the transparency level of the auxiliary window.
@@ -306,6 +312,9 @@ settings:
       autoShow:
         label: Auto Show and Close
         description: Automatically show or close the champion data window during specific game phases.
+      showInTaskbar:
+        label: Show Window in Taskbar
+        description: Show the champion data window in the taskbar and Alt+Tab switcher. When disabled, it does not clutter the taskbar and can be accessed via the main window button or shortcut.
       opacity:
         label: Window Opacity
         description: Adjust the transparency level of the champion data window.

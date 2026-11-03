@@ -6,9 +6,18 @@
     <!-- title line (title + expand) -->
     <div class="mb-2 flex items-center justify-between text-[13px] font-bold">
       {{ t('opgg.champion.spells') }}
-      <NCheckbox size="small" v-model:checked="isSummonerSpellsExpanded">
-        {{ t('opgg.champion.showAll') }}
-      </NCheckbox>
+      <div class="flex items-center gap-2">
+        <NCheckbox
+          size="small"
+          v-model:checked="ogs.frontendSettings.autoApplySpells"
+          :title="t('opgg.view.settings.autoApplySpells.description')"
+        >
+          {{ t('opgg.champion.autoApply') }}
+        </NCheckbox>
+        <NCheckbox size="small" v-model:checked="isSummonerSpellsExpanded">
+          {{ t('opgg.champion.showAll') }}
+        </NCheckbox>
+      </div>
     </div>
 
     <!--  summoner spells -->
@@ -64,11 +73,12 @@
 </template>
 
 <script setup lang="ts">
+import { useOpggStore } from '@opgg-window/shards/opgg/store'
 import SummonerSpellDisplay from '@renderer-shared/components/widgets/SummonerSpellDisplay.vue'
 import { useLeagueClientStore } from '@renderer-shared/shards/league-client/store'
 import { useTranslation } from 'i18next-vue'
 import { NButton, NCheckbox } from 'naive-ui'
-import { ref, watchEffect } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 
 import { useOpgg } from '../context'
 import { useLoadout } from '../utils/loadout'
@@ -77,6 +87,7 @@ const { champion, flashPosition } = useOpgg()
 const { setSummonerSpells } = useLoadout()
 const { t } = useTranslation()
 const lcs = useLeagueClientStore()
+const ogs = useOpggStore()
 
 const isSummonerSpellsExpanded = ref(false)
 
@@ -85,4 +96,13 @@ watchEffect(() => {
     isSummonerSpellsExpanded.value = false
   }
 })
+
+watch(
+  () => ogs.frontendSettings.autoApplySpells,
+  (val) => {
+    if (val && champion.value?.data.summoner_spells?.[0] && lcs.gameflow.phase === 'ChampSelect') {
+      setSummonerSpells(champion.value.data.summoner_spells[0].ids, flashPosition.value)
+    }
+  }
+)
 </script>

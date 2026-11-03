@@ -27,6 +27,16 @@
         />
       </SettingsRow>
       <SettingsRow
+        :label="t('opgg.view.settings.showInTaskbar.label')"
+        :label-description="t('opgg.view.settings.showInTaskbar.description')"
+      >
+        <NSwitch
+          @update:value="(val) => wm.opggWindow.setShowInTaskbar(val)"
+          :value="ows.settings.showInTaskbar"
+          size="small"
+        />
+      </SettingsRow>
+      <SettingsRow
         :label="t('opgg.view.settings.defaultSource.label')"
         :label-description="t('opgg.view.settings.defaultSource.description')"
       >

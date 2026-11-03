@@ -63,13 +63,18 @@ export const useAuxWindowStore = defineStore('shard:window-manager-renderer/aux-
     enabled: true,
     autoShow: true,
     opacity: 0.9,
-    pinned: true
+    pinned: true,
+    showInTaskbar: false,
+    autoDockToLeagueClient: true,
+    dockPlacement: 'top-right' as 'top-left' | 'bottom-left' | 'top-right' | 'bottom-right'
   })
 
+  const expanded = ref(false)
   const basicWindowState = useBasicWindowStates()
 
   return {
     settings,
+    expanded,
     ...basicWindowState
   }
 })
@@ -81,7 +86,8 @@ export const useOpggWindowStore = defineStore('shard:window-manager-renderer/opg
     opacity: 0.9,
     pinned: true,
     showShortcut: null as string | null,
-    showSkinSelector: false
+    showSkinSelector: false,
+    showInTaskbar: false
   })
 
   const basicWindowState = useBasicWindowStates()

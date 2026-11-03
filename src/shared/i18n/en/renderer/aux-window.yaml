@@ -8,6 +8,8 @@ auxWindow:
     indicatorTitle: Auxiliary Window of $t(common:appName)
     pin: Pin
     unpin: Unpin
+    dock: Dock to League Client
+    undock: Undock from League Client
     repositionToAlignLeagueClientUx: Align with League Client UX
   championBench:
     title: Champion Bench
@@ -63,6 +65,8 @@ auxWindow:
     operations:
       immediately: Immediately
       second: s
+      expandDetails: Expand Details
+      collapseDetails: Collapse Details
       autoAccept:
         label: Auto Accept
         unavailable: Unavailable
@@ -96,6 +100,7 @@ auxWindow:
         cancel: Cancel this auto-matchmaking
         searching: Searching
         searchIn: Searching {{seconds}} s
+        willSearchIn: Match in {{seconds}} s
         waitingForPenalty: Waiting for dodge timer {{seconds}} s
         waitingForMembers_one: Auto-matchmaking requires {{count}} player
         waitingForMembers_other: Auto-matchmaking requires {{count}} players

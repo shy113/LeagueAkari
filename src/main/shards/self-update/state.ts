@@ -12,12 +12,12 @@ export class SelfUpdateSettings {
   /**
    * 是否自动检查更新
    */
-  autoCheckUpdates: boolean = true
+  autoCheckUpdates: boolean = false
 
   /**
    * 是否自动下载更新
    */
-  autoDownloadUpdates: boolean = true
+  autoDownloadUpdates: boolean = false
 
   /**
    * 忽略的版本号

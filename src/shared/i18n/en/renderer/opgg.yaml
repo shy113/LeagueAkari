@@ -111,6 +111,9 @@ opgg:
       enabled:
         label: Enable
         description: Enable the champion data window. If disabled, it can be re-opened in main settings
+      showInTaskbar:
+        label: Show Window in Taskbar
+        description: Show this window in the taskbar and Alt+Tab switcher. When disabled, it does not clutter the taskbar
       defaultSource:
         label: Default Data Source
         description: The preferred source when opening the window; unavailable sources are disabled
@@ -158,6 +161,7 @@ opgg:
     showAll: Show All
     spells: Summoner Spells
     apply: Apply
+    autoApply: Auto Apply
     runes: Rune Builds
     abilityBuild: Ability Leveling
     starterItemText: Starting Items

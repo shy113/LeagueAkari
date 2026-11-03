@@ -43,9 +43,21 @@ asarUnpack:
   - resources/**
 win:
   target:
+    - nsis
     - 7z
   executableName: LeagueAkari
   icon: resources/LA_ICON.ico
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+  allowElevation: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: League Akari
+  uninstallDisplayName: ${productName}
+  artifactName: ${productName}-Setup-${version}.${ext}
 
 mac:
   target:

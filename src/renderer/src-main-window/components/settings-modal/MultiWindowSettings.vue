@@ -43,6 +43,30 @@
           />
         </SettingsRow>
         <SettingsRow
+          setting-id="multi-window.aux.auto-dock"
+          :label="t('settings.multiWindow.auxWindow.autoDock.label')"
+          :label-description="t('settings.multiWindow.auxWindow.autoDock.description')"
+          :label-width="400"
+        >
+          <NSwitch
+            size="small"
+            :value="aws.settings.autoDockToLeagueClient"
+            @update:value="(val) => wm.auxWindow.setAutoDockToLeagueClient(val)"
+          />
+        </SettingsRow>
+        <SettingsRow
+          setting-id="multi-window.aux.show-in-taskbar"
+          :label="t('settings.multiWindow.auxWindow.showInTaskbar.label')"
+          :label-description="t('settings.multiWindow.auxWindow.showInTaskbar.description')"
+          :label-width="400"
+        >
+          <NSwitch
+            size="small"
+            :value="aws.settings.showInTaskbar"
+            @update:value="(val) => wm.auxWindow.setShowInTaskbar(val)"
+          />
+        </SettingsRow>
+        <SettingsRow
           setting-id="multi-window.aux.opacity"
           :label="t('settings.multiWindow.auxWindow.opacity.label')"
           :label-description="t('settings.multiWindow.auxWindow.opacity.description')"
@@ -111,6 +135,18 @@
             size="small"
             :value="ows.settings.autoShow"
             @update:value="(val) => wm.opggWindow.setAutoShow(val)"
+          />
+        </SettingsRow>
+        <SettingsRow
+          setting-id="multi-window.opgg.show-in-taskbar"
+          :label="t('settings.multiWindow.opggWindow.showInTaskbar.label')"
+          :label-description="t('settings.multiWindow.opggWindow.showInTaskbar.description')"
+          :label-width="400"
+        >
+          <NSwitch
+            size="small"
+            :value="ows.settings.showInTaskbar"
+            @update:value="(val) => wm.opggWindow.setShowInTaskbar(val)"
           />
         </SettingsRow>
         <SettingsRow
