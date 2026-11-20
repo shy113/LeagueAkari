@@ -99,6 +99,8 @@
         </div>
       </div>
     </template>
+
+    <MayhemAugmentControl />
   </div>
 </template>
 
@@ -109,6 +111,7 @@ import HextechSwitch from '@aux-window/components/HextechSwitch.vue'
 import { useInstance } from '@renderer-shared/shards'
 import { AutoGameflowRenderer } from '@renderer-shared/shards/auto-gameflow'
 import { useAutoGameflowStore } from '@renderer-shared/shards/auto-gameflow/store'
+import MayhemAugmentControl from '@renderer-shared/shards/hextech-augment/MayhemAugmentControl.vue'
 import { useLeagueClientStore } from '@renderer-shared/shards/league-client/store'
 import { WindowManagerRenderer } from '@renderer-shared/shards/window-manager'
 import { useTranslation } from 'i18next-vue'
